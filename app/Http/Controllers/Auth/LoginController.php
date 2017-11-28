@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -52,5 +54,23 @@ class LoginController extends Controller
         }
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    public function logout(Request $request)
+    {
+        $user_with_email = User::where('email', $request['email'])->first();
+        $user_with_token = Auth::guard('api')->user();
+
+        if (!$user_with_email) {
+            return response()->json(['error' => 'User tidak terdaftar.'], 401);
+        }
+
+        if ($user_with_email != $user_with_token) {
+            return response()->json(['error' => 'Autentikasi gagal.'], 401);
+        }
+
+        $user_with_email->api_token = null;
+        $user_with_email->save();
+        return response()->json(['data' => 'Logout berhasil.'], 200);
     }
 }
