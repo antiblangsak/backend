@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -47,10 +48,18 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        return Validator::make($data,
+            [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'birth_date' => 'required|date',
+            'email' => 'required|string|email|max:255|unique:user',
+            'phone_number' => 'required|string|min:9|unique:user',
             'password' => 'required|string|min:6|confirmed',
+        ],
+            [
+            'email.unique' => 'Email sudah terdaftar.',
+            'phone_number.unique' => 'No. handphone sudah terdaftar.',
+            'password.confirmed' => 'Password atau konfirmasi password tidak sesuai.',
         ]);
     }
 
@@ -58,14 +67,24 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
+            'birth_date' => $data['birth_date'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'phone_number' => $data['phone_number'],
+            'password' => bcrypt($data['password'])
         ]);
     }
+
+    protected function registered(Request $request, $user)
+    {
+        $user->generateToken();
+        return response()->json(['data' => $user->toArray()], 201);
+    }
+
+
 }

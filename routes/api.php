@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Auth::guard('api')->user(); // instance of the logged user
+Auth::guard('api')->check(); // if a user is authenticated
+Auth::guard('api')->id(); // the id of the authenticated user
+
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('logout', 'Auth\LoginController@logout');
+});
+
+Route::post('register', 'Auth\RegisterController@register');
+Route::post('login', 'Auth\LoginController@login');
