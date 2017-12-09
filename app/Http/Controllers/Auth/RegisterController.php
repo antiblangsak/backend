@@ -51,9 +51,7 @@ class RegisterController extends Controller
         return Validator::make($data,
             [
             'name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
             'email' => 'required|string|email|max:255|unique:user',
-            'phone_number' => 'required|string|min:9|unique:user',
             'password' => 'required|string|min:6|confirmed',
         ],
             [
@@ -73,9 +71,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'birth_date' => $data['birth_date'],
             'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
             'password' => bcrypt($data['password'])
         ]);
     }
@@ -83,7 +79,7 @@ class RegisterController extends Controller
     protected function registered(Request $request, $user)
     {
         $user->generateToken();
-        return response()->json(['data' => $user->toArray()], 201);
+        return response()->json(['data' => $user->postLoginData()], 201);
     }
 
 
