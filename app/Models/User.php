@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number', 'birth_date', 'api_token'
+        'name', 'email', 'password', 'api_token'
     ];
 
     /**
@@ -35,5 +35,19 @@ class User extends Authenticatable
         $this->save();
 
         return $this->api_token;
+    }
+
+    public function postLoginData() {
+        $data = [
+            'id' => $this->id,
+            'email' => $this->email,
+            'api_token' => $this->api_token,
+//            'keluarga' => [
+//                'id' => 1,
+//                'status' => 1
+//            ]
+            'keluarga' => []
+        ];
+        return $data;
     }
 }
