@@ -23,6 +23,9 @@ Auth::guard('api')->id(); // the id of the authenticated user
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('logout', 'Auth\LoginController@logout');
+    Route::apiResource('user', 'UserController', ['only' => [
+        'show'
+    ]]);
     Route::apiResource('feeds', 'FeedsController');
 });
 
