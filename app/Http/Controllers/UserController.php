@@ -61,7 +61,8 @@ class UserController extends Controller
             'bank_accounts' => [ // TODO
                 'id' => 1,
                 'name' => $user->name . ' - BCA'
-            ]
+            ],
+            'member_since' => $user->created_at->toDateString()
         ];
         return $profile;
     }
