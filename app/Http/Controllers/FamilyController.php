@@ -48,6 +48,7 @@ class FamilyController extends Controller
     public function show(Family $family)
     {
         $data = collect($family);
+        $data['family_members'] = $family->familyMembers;
         return response(['data' => $data], 200);
     }
 
