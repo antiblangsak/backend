@@ -29,6 +29,18 @@ class User extends Authenticatable
         'password', 'remember_token'
     ];
 
+    public function registeredFamily() {
+        return $this->hasOne('App\Models\Family');
+    }
+
+    public function familyMember() {
+        return $this->hasOne('App\Models\FamilyMember');
+    }
+
+    public function bankAccounts() {
+        return $this->hasMany('App\Models\BankAccount');
+    }
+
     public function generateToken()
     {
         $this->api_token = str_random(60);

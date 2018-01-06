@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Family;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -50,23 +53,6 @@ class UserController extends Controller
         return response(['data' => $profile], 200);
     }
 
-    public function getUserProfile($userId) {
-        $user = User::find($userId);
-        $profile = [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone_number' => '+6281000000000', // TODO
-            'gender' => 'Laki-laki', // TODO
-            'bank_accounts' => [ // TODO
-                'id' => 1,
-                'name' => $user->name . ' - BCA'
-            ],
-            'member_since' => $user->created_at->toDateString()
-        ];
-        return $profile;
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -99,5 +85,66 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getUserProfile($userId) {
+        $user = User::find($userId);
+        $profile = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone_number' => '+6281000000000', // TODO
+            'gender' => 'Laki-laki', // TODO
+            'bank_accounts' => $this->getBankAccounts($user->id),
+            'member_since' => $user->created_at->toDateString()
+        ];
+        return $profile;
+    }
+
+    public function getBankAccounts($id) {
+        $user = User::find($id);
+        $bankAccounts = $user->bankAccounts;
+        $data = collect([]);
+
+        foreach ($bankAccounts as $bankAccount) {
+            $data->push([
+                'id' => $bankAccount->id,
+                'name' => $bankAccount->account_name . ' - ' . $bankAccount->bank_name
+            ]);
+        }
+        return $data;
+    }
+
+    public function connectUserToFamily(Request $request) {
+        $user_id = $request->input('user_id', 99);
+        $nik = $request->input('nik');
+        $familyId = $request->input('family_id');
+
+        try {
+            $family = Family::findOrFail($familyId);
+            $familyMember = $family->familyMembers()->where('nik', $nik)->firstOrFail();
+            $familyMember->user_id = $user_id;
+            $familyMember->save();
+        } catch (ModelNotFoundException $e) {
+            if ($e->getModel() == 'App\Models\Family') {
+                return response([
+                    'error' => 'Keluarga tidak ditemukan.',
+                    'last_trace' => $e->getMessage()
+                ], 404);
+            } else {
+                return response([
+                    'error' => 'NIK Anda tidak ditemukan pada data keluarga.',
+                    'last_trace' => $e->getMessage()],
+                    404);
+            }
+        } catch (QueryException $e) {
+            return response([
+                'error' => 'Id user tidak valid.',
+                'last_trace' => $e->getMessage()],
+                404);
+        } catch (\Exception $e) {
+            return response(['error' => $e->getMessage()], 500);
+        }
+        return response(['data' => 'Berhasil terhubung dengan keluarga.'], 201);
     }
 }
