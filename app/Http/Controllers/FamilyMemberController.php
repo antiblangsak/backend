@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Feeds;
-use App\Models\User;
+use App\Models\FamilyMember;
 use Illuminate\Http\Request;
 
-class FeedsController extends Controller
+class FamilyMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,21 +14,7 @@ class FeedsController extends Controller
      */
     public function index()
     {
-        $data = collect([]);
-        $allFeeds = Feeds::all();
-
-        foreach ($allFeeds as $feeds) {
-            $user = $feeds->user;
-            $data->push([
-                'id' => $feeds->id,
-                'user_id' => $user->id,
-                'username' => $user->name,
-                'content' => $feeds->content,
-                'created_at' => $feeds->created_at->toDateTimeString(),
-                'updated_at' => $feeds->updated_at->toDateTimeString()
-            ]);
-        }
-        return response(['data' => $data], 200);
+        //
     }
 
     /**
@@ -50,29 +35,29 @@ class FeedsController extends Controller
      */
     public function store(Request $request)
     {
-        $feeds = Feeds::create($request->all());
-        return response(['data' => $feeds], 201);
+        $data = FamilyMember::create($request->all());
+        return response(['data' => $data], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\FamilyMember  $familyMember
      * @return \Illuminate\Http\Response
      */
-    public function show(Feeds $feeds)
+    public function show(FamilyMember $familyMember)
     {
-        $data = collect($feeds);
+        $data = collect($familyMember);
         return response(['data' => $data], 200);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\FamilyMember  $familyMember
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(FamilyMember $familyMember)
     {
         //
     }
@@ -81,10 +66,10 @@ class FeedsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\FamilyMember  $familyMember
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, FamilyMember $familyMember)
     {
         //
     }
@@ -92,10 +77,10 @@ class FeedsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\FamilyMember  $familyMember
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(FamilyMember $familyMember)
     {
         //
     }

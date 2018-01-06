@@ -27,6 +27,13 @@ Route::group(['middleware' => 'auth:api'], function() {
         'show'
     ]]);
     Route::apiResource('feeds', 'FeedsController');
+    Route::apiResource('bank_accounts', 'BankAccountController');
+    Route::apiResource('family', 'FamilyController');
+    Route::apiResource('family_member', 'FamilyMemberController');
+
+    Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
+    Route::post('connect_family', 'UserController@connectUserToFamily');
+    Route::get('family/{family_id}/get_family_members', 'FamilyController@getFamilyMembers');
 });
 
 Route::post('register', 'Auth\RegisterController@register');
