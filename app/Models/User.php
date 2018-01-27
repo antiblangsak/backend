@@ -45,6 +45,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\FamilyRegistration');
     }
 
+    public function registeredClients() {
+        return $this->hasMany('App\Models\Client');
+    }
+
     public function generateToken()
     {
         $this->api_token = str_random(60);

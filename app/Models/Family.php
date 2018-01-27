@@ -30,4 +30,8 @@ class Family extends Model
     public function referencedUser() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function familyMembersAsClients() {
+        return $this->hasManyThrough('App\Models\Client', 'App\Models\FamilyMember');
+    }
 }

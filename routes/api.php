@@ -31,10 +31,13 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('family', 'FamilyController');
     Route::apiResource('family_member', 'FamilyMemberController');
     Route::apiResource('family_registration', 'FamilyRegistrationController');
+    Route::apiResource('client', 'ClientController');
 
     Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
     Route::post('connect_family', 'UserController@connectUserToFamily');
     Route::get('family/{family_id}/family_members', 'FamilyController@getFamilyMembers');
+    Route::get('dwk/{family_id}/unregistered_family_members', 'DWKController@getUnregisteredFamilyMembers');
+    Route::get('dwk/{family_id}/registered_family_members', 'DWKController@getRegisteredFamilyMembers');
 });
 
 Route::post('register', 'Auth\RegisterController@register');

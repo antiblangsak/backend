@@ -31,4 +31,8 @@ class FamilyMember extends Model
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function registeredAsClients() {
+        return $this->hasMany('App\Models\Client');
+    }
 }
