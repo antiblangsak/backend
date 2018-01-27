@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('bank_accounts', 'BankAccountController');
     Route::apiResource('family', 'FamilyController');
     Route::apiResource('family_member', 'FamilyMemberController');
+    Route::apiResource('family_registration', 'FamilyRegistrationController');
 
     Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
     Route::post('connect_family', 'UserController@connectUserToFamily');
