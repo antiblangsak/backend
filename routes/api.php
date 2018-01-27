@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
     Route::post('connect_family', 'UserController@connectUserToFamily');
-    Route::get('family/{family_id}/get_family_members', 'FamilyController@getFamilyMembers');
+    Route::get('family/{family_id}/family_members', 'FamilyController@getFamilyMembers');
 });
 
 Route::post('register', 'Auth\RegisterController@register');
