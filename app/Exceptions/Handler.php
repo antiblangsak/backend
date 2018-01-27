@@ -44,6 +44,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->wantsJson()) {
+            $class = get_class($exception);
+            if ($exception instanceof AuthenticationException) {
+                return $this->unauthenticated($request, $exception);
+            }
+
+            if (method_exists($exception, 'getStatusCode')) {
+                $statusCode = $exception->getStatusCode();
+            } else {
+                $statusCode = 500;
+            }
+            return response()->json(['exception' => $class, 'trace' => $exception->getMessage(),
+                'file' => $exception->getFile(), 'line' => $exception->getLine()], $statusCode);
+        }
         return parent::render($request, $exception);
     }
 
