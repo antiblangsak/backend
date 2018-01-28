@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Family;
 
 class User extends Authenticatable
 {
@@ -58,15 +59,21 @@ class User extends Authenticatable
     }
 
     public function postLoginData() {
+        $family = Family::where('ref_user_id', $this->id);
+
+        $familyDict = [];
+        if ($family->exists()) {
+            $familyDict = [
+                'id' => $family->first()->id,
+                'status' => $family->first()->status
+            ];
+        }
+
         $data = [
             'id' => $this->id,
             'email' => $this->email,
             'api_token' => $this->api_token,
-//            'keluarga' => [
-//                'id' => 1,
-//                'status' => 1
-//            ]
-            'keluarga' => []
+            'keluarga' => $familyDict
         ];
         return $data;
     }
