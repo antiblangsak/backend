@@ -61,20 +61,24 @@ class User extends Authenticatable
     public function postLoginData() {
         $family = Family::where('ref_user_id', $this->id);
 
-        $familyDict = [];
         if ($family->exists()) {
-            $familyDict = [
-                'id' => $family->first()->id,
-                'status' => $family->first()->status
+            $data = [
+                'id' => $this->id,
+                'email' => $this->email,
+                'api_token' => $this->api_token,
+                'keluarga' => [
+                    'id' => $family->first()->id,
+                    'status' => $family->first()->status
+                ]
+            ];
+        } else {
+            $data = [
+                'id' => $this->id,
+                'email' => $this->email,
+                'api_token' => $this->api_token,
             ];
         }
 
-        $data = [
-            'id' => $this->id,
-            'email' => $this->email,
-            'api_token' => $this->api_token,
-            'keluarga' => $familyDict
-        ];
         return $data;
     }
 }
