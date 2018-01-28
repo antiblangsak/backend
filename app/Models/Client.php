@@ -30,11 +30,11 @@ class Client extends Model
     const SERVICE_DKK_ID = 3;
     const SERVICE_DWK_ID = 2;
 
-    public function getFamilyMember() {
+    public function familyMember() {
         return $this->belongsTo('App\Models\FamilyMember');
     }
 
     public function referencedUser() {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'ref_user_id');
     }
 }

@@ -27,11 +27,19 @@ class Family extends Model
         return $this->hasMany('App\Models\FamilyMember');
     }
 
+    public function familyMemberIds() {
+        return $this->hasMany('App\Models\FamilyMember')->select(['id']);
+    }
+
     public function referencedUser() {
         return $this->belongsTo('App\Models\User');
     }
 
     public function familyMembersAsClients() {
         return $this->hasManyThrough('App\Models\Client', 'App\Models\FamilyMember');
+    }
+
+    public function familyMembersAsClientIds() {
+        return $this->hasManyThrough('App\Models\Client', 'App\Models\FamilyMember')->select(['client.id']);
     }
 }

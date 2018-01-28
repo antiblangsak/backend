@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BankAccount extends Model
+class ClientPayment extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'bank_account';
+    protected $table = 'client_payment';
 
     /**
      * The attributes that are mass assignable.
@@ -19,10 +19,14 @@ class BankAccount extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'bank_name', 'branch_name', 'account_number', 'account_name', 'account_photo'
+        'payment_id', 'client_id'
     ];
 
-    public function referencedUser() {
-        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    public function client() {
+        return $this->belongsTo('App\Models\Client');
+    }
+
+    public function payment() {
+        return $this->belongsTo('App\Models\Payment');
     }
 }
