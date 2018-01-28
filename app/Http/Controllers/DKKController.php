@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientPayment;
 use Illuminate\Http\Request;
 use App\Models\Family;
 use App\Models\DWK;
+use App\Models\Payment;
+use App\Models\Claim;
+use App\Models\Constants;
 
-class DWKController extends Controller
+class DKKController extends Controller
 {
     public function getFamilyMembers($familyId, $registered) {
         $family = Family::find($familyId);
@@ -15,7 +19,7 @@ class DWKController extends Controller
         $data = collect([]);
         foreach ($familyMembers as $familyMember) {
             if ($registered) {
-                if ($familyMember->registeredAsClients->where('service_id', DWK::SERVICE_ID)->count() > 0) {
+                if ($familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID)->count() > 0) {
                     $data->push([
                         'id' => $familyMember->id,
                         'fullname' => $familyMember->fullname,
@@ -23,7 +27,7 @@ class DWKController extends Controller
                     ]);
                 }
             } else {
-                if ($familyMember->registeredAsClients->where('service_id', DWK::SERVICE_ID)->count() == 0) {
+                if ($familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID)->count() == 0) {
                     $data->push([
                         'id' => $familyMember->id,
                         'fullname' => $familyMember->fullname,

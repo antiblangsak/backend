@@ -36,8 +36,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
     Route::post('connect_family', 'UserController@connectUserToFamily');
     Route::get('family/{family_id}/family_members', 'FamilyController@getFamilyMembers');
-    Route::get('dwk/{family_id}/unregistered_family_members', 'DWKController@getUnregisteredFamilyMembers');
-    Route::get('dwk/{family_id}/registered_family_members', 'DWKController@getRegisteredFamilyMembers');
+    Route::get('dkk/{family_id}/unregistered_family_members', 'DKKController@getUnregisteredFamilyMembers');
+    Route::get('dkk/{family_id}/registered_family_members', 'DKKController@getRegisteredFamilyMembers');
 });
 
 Route::post('register', 'Auth\RegisterController@register');
