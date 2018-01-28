@@ -74,7 +74,7 @@ class DKKController extends Controller
 
         foreach ($payments as $payment) {
             $data->push([
-                'type' => 'Payment',
+                'type' => 'Pembayaran',
                 'id' => $payment->id,
                 'status' => $payment->status,
                 'created_at' => $payment->created_at->toDateTimeString()
@@ -83,7 +83,7 @@ class DKKController extends Controller
 
         foreach ($claims as $claim) {
             $data->push([
-                'type' => 'Claim',
+                'type' => 'Klaim',
                 'id' => $claim->id,
                 'status' => $claim->status,
                 'created_at' => $claim->created_at->toDateTimeString()
