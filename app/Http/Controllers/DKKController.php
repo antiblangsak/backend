@@ -37,15 +37,26 @@ class DKKController extends Controller
             }
         }
 
-        return response(['data' => $data], 200);
+        return $data;
     }
 
     public function getUnregisteredFamilyMembers($familyId) {
-        return $this->getFamilyMembers($familyId, false);
+        $data = $this->getFamilyMembers($familyId, false);
+        return response(['data' => $data], 200);
     }
 
     public function getRegisteredFamilyMembers($familyId) {
-        return $this->getFamilyMembers($familyId, true);
+        $data = $this->getFamilyMembers($familyId, true);
+        return response(['data' => $data], 200);
+    }
+
+    public function getSplittedFamilyMembers($familyId) {
+        $registeredMembers = $this->getFamilyMembers($familyId, true);
+        $unregisteredMembers = $this->getFamilyMembers($familyId, false);
+        return collect([
+            'registered' => $registeredMembers,
+            'unregistered' => $unregisteredMembers
+        ]);
     }
 
     public function getHistory($familyId) {
