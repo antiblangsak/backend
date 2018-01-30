@@ -56,10 +56,10 @@ class DKKController extends Controller
     public function getSplittedFamilyMembers($familyId) {
         $registeredMembers = $this->getFamilyMembers($familyId, true);
         $unregisteredMembers = $this->getFamilyMembers($familyId, false);
-        return collect([
+        return response(['data' => [
             'registered' => $registeredMembers,
             'unregistered' => $unregisteredMembers
-        ]);
+        ]], 200);
     }
 
     public function getHistory($familyId) {
