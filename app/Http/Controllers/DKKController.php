@@ -18,16 +18,19 @@ class DKKController extends Controller
 
         $data = collect([]);
         foreach ($familyMembers as $familyMember) {
+            $client = $familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID);
             if ($registered) {
-                if ($familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID)->count() > 0) {
+                if ($client->count() > 0) {
+                    $client = $client->first();
                     $data->push([
                         'id' => $familyMember->id,
                         'fullname' => $familyMember->fullname,
-                        'relation' => $familyMember->relation
+                        'relation' => $familyMember->relation,
+                        'status' => $client->status
                     ]);
                 }
             } else {
-                if ($familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID)->count() == 0) {
+                if ($client->count() == 0) {
                     $data->push([
                         'id' => $familyMember->id,
                         'fullname' => $familyMember->fullname,
