@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('dkk/{family_id}/registered_family_members', 'DKKController@getRegisteredFamilyMembers');
     Route::get('dkk/{family_id}/family_members', 'DKKController@getSplittedFamilyMembers');
     Route::get('dkk/{family_id}/history', 'DKKController@getHistory');
+    Route::get('dkk/{family_id}/get_prepayment_info', 'DKKController@getPaymentInfo');
 
     Route::get('dwk/{family_id}/unregistered_family_members', 'DWKController@getUnregisteredFamilyMembers');
     Route::get('dwk/{family_id}/registered_family_members', 'DWKController@getRegisteredFamilyMembers');
