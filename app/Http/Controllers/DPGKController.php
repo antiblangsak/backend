@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Syukri
+ * Date: 2/11/18
+ * Time: 1:30 PM
+ */
 
 namespace App\Http\Controllers;
 
@@ -8,15 +14,14 @@ use App\Models\Payment;
 use App\Models\Claim;
 use App\Models\Constants;
 
-class DKKController extends Controller
-{
+class DPGKController {
     public function getFamilyMembers($familyId, $registered) {
         $family = Family::find($familyId);
         $familyMembers = $family->familyMembers;
 
         $data = collect([]);
         foreach ($familyMembers as $familyMember) {
-            $client = $familyMember->registeredAsClients->where('service_id', Constants::DKK_SERVICE_ID);
+            $client = $familyMember->registeredAsClients->where('service_id', Constants::DPGK_SERVICE_ID);
             if ($registered) {
                 if ($client->count() > 0) {
                     $client = $client->first();
@@ -76,10 +81,10 @@ class DKKController extends Controller
             array_push($paymentIds, $clientPayment->payment_id);
         }
 
-        $payments = Payment::where('service_id', Constants::DKK_SERVICE_ID)->get()
+        $payments = Payment::where('service_id', Constants::DPGK_SERVICE_ID)->get()
             ->whereIn('id', $paymentIds);
 
-        $claims = Claim::where('service_id', Constants::DKK_SERVICE_ID)->get()
+        $claims = Claim::where('service_id', Constants::DPGK_SERVICE_ID)->get()
             ->whereIn('client_id', $clientIds);
 
         $data = collect([]);

@@ -38,10 +38,21 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('user/{user_id}/get_bank_accounts', 'UserController@getBankAccounts');
     Route::post('connect_family', 'UserController@connectUserToFamily');
     Route::get('family/{family_id}/family_members', 'FamilyController@getFamilyMembers');
+
+    Route::get('dpgk/{family_id}/unregistered_family_members', 'DPGKController@getUnregisteredFamilyMembers');
+    Route::get('dpgk/{family_id}/registered_family_members', 'DPGKController@getRegisteredFamilyMembers');
+    Route::get('dpgk/{family_id}/family_members', 'DPGKController@getSplittedFamilyMembers');
+    Route::get('dpgk/{family_id}/history', 'DPGKController@getHistory');
+
     Route::get('dkk/{family_id}/unregistered_family_members', 'DKKController@getUnregisteredFamilyMembers');
     Route::get('dkk/{family_id}/registered_family_members', 'DKKController@getRegisteredFamilyMembers');
     Route::get('dkk/{family_id}/family_members', 'DKKController@getSplittedFamilyMembers');
     Route::get('dkk/{family_id}/history', 'DKKController@getHistory');
+
+    Route::get('dwk/{family_id}/unregistered_family_members', 'DWKController@getUnregisteredFamilyMembers');
+    Route::get('dwk/{family_id}/registered_family_members', 'DWKController@getRegisteredFamilyMembers');
+    Route::get('dwk/{family_id}/family_members', 'DWKController@getSplittedFamilyMembers');
+    Route::get('dwk/{family_id}/history', 'DWKController@getHistory');
 });
 
 Route::post('register', 'Auth\RegisterController@register');
