@@ -101,7 +101,8 @@ class PaymentController extends Controller
      */
     public function update(Request $request, Payment $payment)
     {
-        //
+        $payment->update($request->all());
+        return response(['data' => $payment], 201);
     }
 
     /**
