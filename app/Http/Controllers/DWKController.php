@@ -110,4 +110,32 @@ class DWKController {
         $data = $data->sortByDesc('created_at')->values()->all();
         return response(['data' => $data], 200);
     }
+
+    public function getClaimInfo($familyId) {
+        $family = Family::find($familyId);
+        $familyData = $family->familyMembers;
+
+        $data = collect([]);
+        foreach ($familyData as $familyMember) {
+            $client = $familyMember->registeredAsClients->where('service_id', Constants::DWK_SERVICE_ID)->first();
+
+            if (!$client) {
+                continue;
+            }
+
+            $acceptedClaims = Claim::where('client_id', $client->id)
+                ->where('status', Claim::STATUS_ACCEPTED)->get();
+            $acceptedClaimAmount = 0;
+
+            foreach ($acceptedClaims as $claim) {
+                $acceptedClaimAmount = $acceptedClaimAmount + $claim->claim_amount;
+            }
+            $data->push([
+                'client_id' => $client->id,
+                'name' => $familyMember->fullname,
+                'remaining_amount' => Claim::MAX_CLAIM_AMOUNT - $acceptedClaimAmount
+            ]);
+        }
+        return response(['data' => $data], 200);
+    }
 }

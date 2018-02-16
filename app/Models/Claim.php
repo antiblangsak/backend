@@ -26,6 +26,8 @@ class Claim extends Model
     const STATUS_ACCEPTED = 1;
     const STATUS_REJECTED = 2;
 
+    const MAX_CLAIM_AMOUNT = 125000000;
+
     public function client() {
         return $this->belongsTo('App\Models\Client');
     }
