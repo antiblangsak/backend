@@ -111,6 +111,26 @@ class DPGKController {
         return response(['data' => $data], 200);
     }
 
+    public function getPaymentInfo($familyId) {
+        $family = Family::find($familyId);
+        $familyData = $this->getFamilyMembers($familyId, true);
+
+        $user = $family->referencedUser;
+        $bankAccounts = $user->bankAccounts;
+        $bankAccountsData = collect([]);
+
+        foreach ($bankAccounts as $bankAccount) {
+            $bankAccountsData->push([
+                'id' => $bankAccount->id,
+                'bank_name' => $bankAccount->bank_name
+            ]);
+        }
+        return response(['data' => [
+            'family_members' => $familyData,
+            'bank_accounts' => $bankAccountsData
+        ]], 200);
+    }
+
     public function getClaimInfo($familyId) {
         $family = Family::find($familyId);
         $familyData = $family->familyMembers;
