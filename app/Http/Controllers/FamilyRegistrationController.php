@@ -37,7 +37,10 @@ class FamilyRegistrationController extends Controller
     {
         $request['status'] = FamilyRegistration::STATUS_WAITING;
         $familyRegistration = FamilyRegistration::create($request->all());
-        return response(['data' => $familyRegistration], 201);
+        return response(['data' => [
+            'id' => $familyRegistration->id,
+            'status' => $familyRegistration->status
+        ]], 201);
     }
 
     /**

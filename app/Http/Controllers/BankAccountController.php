@@ -53,7 +53,13 @@ class BankAccountController extends Controller
     public function store(Request $request)
     {
         $bankAccount = BankAccount::create($request->all());
-        return response(['data' => $bankAccount], 201);
+        return response(['data' => [
+            'id' => $bankAccount->id,
+            'bank_name' => $bankAccount->bank_name,
+            'branch_name' => $bankAccount->branch_name,
+            'account_number' => $bankAccount->account_number,
+            'account_name' => $bankAccount->account_name
+        ]], 201);
     }
 
     /**
