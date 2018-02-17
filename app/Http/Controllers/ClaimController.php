@@ -98,4 +98,17 @@ class ClaimController extends Controller
     {
         //
     }
+
+    public function upload(Request $request) {
+        $claimId = $request->claim_id;
+        $base64 = $request->image;
+
+        $claim = ClaimRequest::where('claim_id', $claimId)->firstOrFail();
+        $claim->file_name = $base64;
+
+        $data = collect([
+            'claim_id' => $claim->claim_id
+        ]);
+        return response(['data' => $data], 201);
+    }
 }

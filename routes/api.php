@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('dwk/{family_id}/history', 'DWKController@getHistory');
     Route::get('dwk/{family_id}/get_prepayment_info', 'DWKController@getPaymentInfo');
     Route::get('dwk/{family_id}/get_claim_info', 'DWKController@getClaimInfo');
+
+    Route::post('claim/upload_file', 'ClaimController@upload');
 });
 
 Route::post('register', 'Auth\RegisterController@register');
