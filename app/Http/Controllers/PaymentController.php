@@ -41,7 +41,7 @@ class PaymentController extends Controller
         $payment->save();
 
         $clients = collect([]);
-        foreach ($request['clients'] as $client_id) {
+        foreach ($request->clients as $client_id) {
             ClientPayment::create(['client_id' => $client_id, 'payment_id' => $payment->id]);
             $clients->push($client_id);
         }
