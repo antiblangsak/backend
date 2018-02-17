@@ -105,6 +105,7 @@ class ClaimController extends Controller
 
         $claim = ClaimRequest::where('claim_id', $claimId)->firstOrFail();
         $claim->file_name = $base64;
+        $claim->save();
 
         $data = collect([
             'claim_id' => $claim->claim_id
