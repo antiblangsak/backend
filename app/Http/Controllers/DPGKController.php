@@ -113,8 +113,15 @@ class DPGKController {
 
     public function getPaymentInfo($familyId) {
         $family = Family::find($familyId);
-        $familyData = $this->getFamilyMembers($familyId, true);
+        $clientData = $family->familyMembersAsClients->where('service_id', Constants::DKK_SERVICE_ID);
 
+        $familyMemberData = collect([]);
+        foreach ($clientData as $client) {
+            $familyMemberData->push([
+                'client_id' => $client->id,
+                'fullname' => $client->familyMember->fullname
+            ]);
+        }
         $user = $family->referencedUser;
         $bankAccounts = $user->bankAccounts;
         $bankAccountsData = collect([]);
@@ -128,7 +135,7 @@ class DPGKController {
             ]);
         }
         return response(['data' => [
-            'family_members' => $familyData,
+            'family_members' => $familyMemberData,
             'bank_accounts' => $bankAccountsData
         ]], 200);
     }
