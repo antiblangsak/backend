@@ -40,4 +40,8 @@ class Claim extends Model
         $createdAt = strtotime($createdAt);
         return 'CLM-' . Constants::getServiceCode($serviceId) . '-' . date('Ymd', $createdAt) . '-' . sprintf('%05d', $id);
     }
+
+    public function claimRequest() {
+        return $this->hasOne('App\Models\ClaimRequest');
+    }
 }

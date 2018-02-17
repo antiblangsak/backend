@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Claim;
+use App\Models\ClaimRequest;
 use Illuminate\Http\Request;
 
 class ClaimController extends Controller
@@ -38,6 +39,10 @@ class ClaimController extends Controller
         $claim = Claim::create($request->all());
         $claim->claim_number = Claim::generateClaimNumber($claim->service_id, $claim->created_at, $claim->id);
         $claim->save();
+
+        $claimRequest = new ClaimRequest();
+        $claimRequest->claim_id = $claim->id;
+        $claimRequest->save();
         return response(['data' => $claim], 201);
     }
 
