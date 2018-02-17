@@ -122,7 +122,9 @@ class DPGKController {
         foreach ($bankAccounts as $bankAccount) {
             $bankAccountsData->push([
                 'id' => $bankAccount->id,
-                'bank_name' => $bankAccount->bank_name
+                'bank_name' => $bankAccount->bank_name,
+                'account_number' => $bankAccount->account_number,
+                'account_name' => $bankAccount->account_name
             ]);
         }
         return response(['data' => [
