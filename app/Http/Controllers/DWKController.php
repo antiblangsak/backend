@@ -113,7 +113,7 @@ class DWKController {
 
     public function getPaymentInfo($familyId) {
         $family = Family::find($familyId);
-        $clientData = $family->familyMembersAsClients->where('service_id', Constants::DKK_SERVICE_ID);
+        $clientData = $family->familyMembersAsClients->where('service_id', Constants::DWK_SERVICE_ID);
 
         $familyMemberData = collect([]);
         foreach ($clientData as $client) {
