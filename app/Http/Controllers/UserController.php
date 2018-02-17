@@ -112,7 +112,7 @@ class UserController extends Controller
                 'name' => $bankAccount->account_name . ' - ' . $bankAccount->bank_name
             ]);
         }
-        return $data;
+        return response(['data' => $data], 200);
     }
 
     public function connectUserToFamily(Request $request) {
