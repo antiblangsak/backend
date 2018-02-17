@@ -72,13 +72,25 @@ class User extends Authenticatable
                 ]
             ];
         } else {
-            $data = [
-                'id' => $this->id,
-                'email' => $this->email,
-                'api_token' => $this->api_token,
-            ];
+            $familyRegistration = FamilyRegistration::where('user_id', $this->id);
+            if ($familyRegistration->exists()) {
+                $data = [
+                    'id' => $this->id,
+                    'email' => $this->email,
+                    'api_token' => $this->api_token,
+                    'keluarga' => [
+                        'id' => $familyRegistration->first()->id,
+                        'status' => $familyRegistration->first()->status
+                    ]
+                ];
+            } else {
+                $data = [
+                    'id' => $this->id,
+                    'email' => $this->email,
+                    'api_token' => $this->api_token,
+                ];
+            }
         }
-
         return $data;
     }
 }
