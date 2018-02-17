@@ -95,13 +95,17 @@ class UserController extends Controller
             'email' => $user->email,
             'phone_number' => '+6281000000000', // TODO
             'gender' => 'Laki-laki', // TODO
-            'bank_accounts' => $this->getBankAccounts($user->id),
+            'bank_accounts' => $this->getBankAccountsHelper($user->id),
             'member_since' => $user->created_at->toDateString()
         ];
         return $profile;
     }
 
     public function getBankAccounts($id) {
+        return response(['data' => $this->getBankAccountsHelper($id)], 200);
+    }
+
+    public function getBankAccountsHelper($id) {
         $user = User::find($id);
         $bankAccounts = $user->bankAccounts;
         $data = collect([]);
@@ -112,7 +116,7 @@ class UserController extends Controller
                 'name' => $bankAccount->account_name . ' - ' . $bankAccount->bank_name
             ]);
         }
-        return response(['data' => $data], 200);
+        return $data;
     }
 
     public function connectUserToFamily(Request $request) {
