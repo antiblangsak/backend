@@ -59,9 +59,10 @@ class User extends Authenticatable
     }
 
     public function postLoginData() {
-        $family = Family::where('ref_user_id', $this->id);
+        $familyMember = FamilyMember::where('user_id', $this->id);
 
-        if ($family->exists()) {
+        if ($familyMember->exists()) {
+            $family = $familyMember->first()->family;
             $data = [
                 'id' => $this->id,
                 'email' => $this->email,
