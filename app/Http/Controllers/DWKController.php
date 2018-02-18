@@ -162,7 +162,7 @@ class DWKController {
             $data->push([
                 'client_id' => $client->id,
                 'name' => $familyMember->fullname,
-                'remaining_amount' => Claim::MAX_CLAIM_AMOUNT - $acceptedClaimAmount
+                'accepted_amount' => $acceptedClaimAmount
             ]);
         }
         return response(['data' => $data], 200);
