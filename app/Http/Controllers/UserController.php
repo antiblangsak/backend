@@ -113,7 +113,10 @@ class UserController extends Controller
         foreach ($bankAccounts as $bankAccount) {
             $data->push([
                 'id' => $bankAccount->id,
-                'name' => $bankAccount->account_name . ' - ' . $bankAccount->bank_name
+                'bank_name' => $bankAccount->bank_name,
+                'account_number' => $bankAccount->account_number,
+                'account_name' => $bankAccount->account_name,
+                'branch_name' => $bankAccount->branch_name
             ]);
         }
         return $data;
