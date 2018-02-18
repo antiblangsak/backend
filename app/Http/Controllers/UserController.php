@@ -129,17 +129,25 @@ class UserController extends Controller
             $familyMember = $family->familyMembers()->where('nik', $nik)->firstOrFail();
             $familyMember->user_id = $user_id;
             $familyMember->save();
+            return response(['data' => [
+                'success' => 'Berhasil terhubung dengan keluarga',
+                'family_id' => $family->id,
+                'status' => $family->status
+                ]
+            ], 201);
         } catch (ModelNotFoundException $e) {
             if ($e->getModel() == 'App\Models\Family') {
-                return response([
-                    'error' => 'Keluarga tidak ditemukan.',
-                    'last_trace' => $e->getMessage()
+                return response(['data' => [
+                        'error' => 'Keluarga tidak ditemukan',
+                        'last_trace' => $e->getMessage()
+                    ]
                 ], 404);
             } else {
-                return response([
-                    'error' => 'NIK Anda tidak ditemukan pada data keluarga.',
-                    'last_trace' => $e->getMessage()],
-                    404);
+                return response(['data' => [
+                        'error' => 'NIK Anda tidak ditemukan pada data keluarga',
+                        'last_trace' => $e->getMessage()
+                    ]
+                ], 404);
             }
         } catch (QueryException $e) {
             return response([
@@ -149,6 +157,5 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 500);
         }
-        return response(['data' => 'Berhasil terhubung dengan keluarga.'], 201);
     }
 }
