@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPassword;
 use App\Models\Family;
+use App\Notifications\MyResetPasswordNotification;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
 
@@ -93,5 +95,19 @@ class User extends Authenticatable
             }
         }
         return $data;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MyResetPasswordNotification($token, $this->getEmailForPasswordReset()));
+    }
+    public function getEmailForPasswordReset() {
+        return $this->email;
     }
 }

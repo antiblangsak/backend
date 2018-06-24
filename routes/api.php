@@ -64,3 +64,5 @@ Route::group(['middleware' => 'auth:api'], function() {
 
 Route::post('register', 'Auth\RegisterController@register');
 Route::post('login', 'Auth\LoginController@login');
+
+Route::post('password/send_reset_email', 'Auth\CustomForgotPasswordController@sendResetEmail');
