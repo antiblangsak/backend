@@ -51,9 +51,9 @@ class MyResetPasswordNotification extends Notification
             ->from('forget-password@antiblangsak.com', '[NO-REPLY] Reset Password Antiblangsak')
             ->greeting('Halo!')
             ->subject('[Antiblangsak] Reset Password')
-            ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk Akun anda.
-            Berikut ini adalah kode unik yang dapat Anda gunakan untuk melakukan reset password Anda pada aplikasi Antiblangsak.')
-            ->line('1234')
+            ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk Akun anda.')
+            ->line('Berikut ini adalah kode unik yang dapat Anda gunakan untuk me-reset password Anda:')
+            ->line(strtoupper($this->token))
             ->line('Jika Anda tidak mengirimkan permintaan reset password dalam waktu dekat, Anda dapat mengabaikan email ini.')
             ->with('Terima kasih,')
             ->salutation('Tim Antiblangsak');

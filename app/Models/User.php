@@ -107,6 +107,7 @@ class User extends Authenticatable implements CanResetPassword
     {
         $this->notify(new MyResetPasswordNotification($token, $this->getEmailForPasswordReset()));
     }
+
     public function getEmailForPasswordReset() {
         return $this->email;
     }

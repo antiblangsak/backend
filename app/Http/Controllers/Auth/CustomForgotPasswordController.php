@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\PasswordReset;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -56,8 +57,43 @@ class CustomForgotPasswordController extends Controller {
     }
 
     public function sendResetEmail(Request $request) {
+        $success = false;
+
         $userEmail = $request['email'];
         $user = User::where('email', $userEmail)->first();
-        $user->sendPasswordResetNotification('asd123asd123');
+        if ($user === null) {
+            $data = [
+                'success' => $success,
+                'error' => 'Email tidak terdaftar.'
+            ];
+            return response(['data' => $data], 400);
+        }
+
+        $token = $this->generateToken();
+        $user->sendPasswordResetNotification($token);
+
+        $passwordReset = new PasswordReset();
+        $passwordReset->email = $userEmail;
+        $passwordReset->token = $token;
+        $passwordReset->save();
+
+        $success = true;
+        $data = [
+            'success' => $success,
+            'token' => $token,
+        ];
+        return response(['data' => $data], 200);
+    }
+
+    public function generateToken() {
+        $length = 6;
+        $str = "";
+        $characters = array_merge(range('a','z'), range('0','9'));
+        $max = count($characters) - 1;
+        for ($i = 0; $i < $length ; $i++) {
+            $rand = mt_rand(0, $max);
+            $str .= $characters[$rand];
+        }
+        return $str;
     }
 }
