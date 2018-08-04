@@ -72,9 +72,16 @@ class CustomForgotPasswordController extends Controller {
         $token = $this->generateToken();
         $user->sendPasswordResetNotification($token);
 
+        $reset = PasswordReset::where('email', $userEmail)->where('is_valid', $value=true)->get();
+        foreach ($reset as $res) {
+            $res->is_valid = false;
+            $res->save();
+        }
+
         $passwordReset = new PasswordReset();
         $passwordReset->email = $userEmail;
         $passwordReset->token = $token;
+        $passwordReset->is_valid = true;
         $passwordReset->save();
 
         $success = true;
@@ -109,26 +116,59 @@ class CustomForgotPasswordController extends Controller {
             ];
             return response(['data' => $data], 404);
         }
-        $email = $reset->email;
 
-        $reset = PasswordReset::where('email', $email)->orderBy('created_at', 'desc')->first();
-        if (strcmp(strtolower($token), strtolower($reset->token)) != 0) {
+        if (!$reset->is_valid) {
             $data = [
                 'success' => $success,
                 'error' => 'Token sudah tidak valid.'
             ];
-            return response(['data' => $data], 404);
+            return response(['data' => $data], 403);
         }
 
         $success = true;
         $data = [
             'success' => $success,
+            'token' => $token,
             'email' => $reset->email
         ];
         return response(['data' => $data], 200);
     }
 
     public function doResetPassword(Request $request) {
+        $success = false;
 
+        $token = $request['token'];
+        $newPassword = $request['new_password'];
+
+        $reset = PasswordReset::where('token', $token)->first();
+        if ($reset === null) {
+            $data = [
+                'success' => $success,
+                'error' => 'Token tidak ditemukan.'
+            ];
+            return response(['data' => $data], 404);
+        }
+
+        if (!$reset->is_valid) {
+            $data = [
+                'success' => $success,
+                'error' => 'Token sudah tidak valid.'
+            ];
+            return response(['data' => $data], 403);
+        }
+
+        $user = User::where('email', $reset->email)->first();
+        $user->password = bcrypt($newPassword);
+        $user->api_token = str_random(60);
+        $user->save();
+
+        $reset->is_valid = false;
+        $reset->save();
+
+        $success = true;
+        $data = [
+            'success' => $success
+        ];
+        return response(['data' => $data], 201);
     }
 }
