@@ -66,7 +66,7 @@ class CustomForgotPasswordController extends Controller {
                 'success' => $success,
                 'error' => 'Email tidak terdaftar.'
             ];
-            return response(['data' => $data], 400);
+            return response(['data' => $data], 404);
         }
 
         $token = $this->generateToken();
@@ -95,5 +95,40 @@ class CustomForgotPasswordController extends Controller {
             $str .= $characters[$rand];
         }
         return $str;
+    }
+
+    public function validateResetPasswordToken(Request $request) {
+        $success = false;
+
+        $token = $request['token'];
+        $reset = PasswordReset::where('token', $token)->first();
+        if ($reset === null) {
+            $data = [
+                'success' => $success,
+                'error' => 'Token tidak ditemukan.'
+            ];
+            return response(['data' => $data], 404);
+        }
+        $email = $reset->email;
+
+        $reset = PasswordReset::where('email', $email)->orderBy('created_at', 'desc')->first();
+        if (strcmp(strtolower($token), strtolower($reset->token)) != 0) {
+            $data = [
+                'success' => $success,
+                'error' => 'Token sudah tidak valid.'
+            ];
+            return response(['data' => $data], 404);
+        }
+
+        $success = true;
+        $data = [
+            'success' => $success,
+            'email' => $reset->email
+        ];
+        return response(['data' => $data], 200);
+    }
+
+    public function doResetPassword(Request $request) {
+
     }
 }

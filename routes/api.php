@@ -66,3 +66,5 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::post('login', 'Auth\LoginController@login');
 
 Route::post('password/send_reset_email', 'Auth\CustomForgotPasswordController@sendResetEmail');
+Route::post('password/validate_reset_token', 'Auth\CustomForgotPasswordController@validateResetPasswordToken');
+Route::post('password/reset', 'Auth\CustomForgotPasswordController@doResetPassword');
